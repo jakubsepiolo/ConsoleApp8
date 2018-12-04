@@ -238,9 +238,9 @@
 
                 ElseIf Maze(Rows, Cols) = 2 Then
 
-                    'Console.ForegroundColor = ConsoleColor.Cyan ''print solution path in cyan
-                    'Console.BackgroundColor = ConsoleColor.Cyan
-                    'Console.Write(" " & Maze(Rows, Cols))
+                    Console.ForegroundColor = ConsoleColor.Cyan ''print solution path in cyan
+                    Console.BackgroundColor = ConsoleColor.Cyan
+                    Console.Write(" " & Maze(Rows, Cols))
 
                 ElseIf Maze(Rows, Cols) = 3 Then
 
@@ -275,9 +275,9 @@
                             If Maze(i, Player.Y) = 1 Then
                                 Console.ForegroundColor = ConsoleColor.White
                                 Console.BackgroundColor = ConsoleColor.White
-                                'ElseIf Maze(i, Player.Y) = 2 Then
-                                '    Console.BackgroundColor = ConsoleColor.Cyan
-                                '    Console.ForegroundColor = ConsoleColor.Cyan
+                            ElseIf Maze(i, Player.Y) = 2 Then
+                                Console.BackgroundColor = ConsoleColor.Cyan
+                                Console.ForegroundColor = ConsoleColor.Cyan
                             ElseIf Maze(i, Player.Y) = 3 Then
                                 Console.BackgroundColor = ConsoleColor.Red
                                 Console.ForegroundColor = ConsoleColor.Red
@@ -298,9 +298,9 @@
                             If Maze(Player.X, i) = 1 Then
                                 Console.ForegroundColor = ConsoleColor.White
                                 Console.BackgroundColor = ConsoleColor.White
-                                'ElseIf Maze(Player.X, i) = 2 Then
-                                '    Console.BackgroundColor = ConsoleColor.Cyan
-                                '    Console.ForegroundColor = ConsoleColor.Cyan
+                            ElseIf Maze(Player.X, i) = 2 Then
+                                Console.BackgroundColor = ConsoleColor.Cyan
+                                Console.ForegroundColor = ConsoleColor.Cyan
                             ElseIf Maze(Player.X, i) = 3 Then
                                 Console.BackgroundColor = ConsoleColor.Red
                                 Console.ForegroundColor = ConsoleColor.Red
@@ -322,9 +322,9 @@
                             If Maze(i, Player.Y) = 1 Then
                                 Console.ForegroundColor = ConsoleColor.White
                                 Console.BackgroundColor = ConsoleColor.White
-                                'ElseIf Maze(i, Player.Y) = 2 Then
-                                '    Console.BackgroundColor = ConsoleColor.Cyan
-                                '    Console.ForegroundColor = ConsoleColor.Cyan
+                            ElseIf Maze(i, Player.Y) = 2 Then
+                                Console.BackgroundColor = ConsoleColor.Cyan
+                                Console.ForegroundColor = ConsoleColor.Cyan
                             ElseIf Maze(i, Player.Y) = 3 Then
                                 Console.BackgroundColor = ConsoleColor.Red
                                 Console.ForegroundColor = ConsoleColor.Red
@@ -346,9 +346,9 @@
                         If Maze(Player.X, i) = 1 Then
                             Console.ForegroundColor = ConsoleColor.White
                             Console.BackgroundColor = ConsoleColor.White
-                            'ElseIf Maze(Player.X, i) = 2 Then
-                            '    Console.BackgroundColor = ConsoleColor.Cyan
-                            '    Console.ForegroundColor = ConsoleColor.Cyan
+                        ElseIf Maze(Player.X, i) = 2 Then
+                            Console.BackgroundColor = ConsoleColor.Cyan
+                            Console.ForegroundColor = ConsoleColor.Cyan
                         ElseIf Maze(Player.X, i) = 3 Then
                             Console.BackgroundColor = ConsoleColor.Red
                             Console.ForegroundColor = ConsoleColor.Red
