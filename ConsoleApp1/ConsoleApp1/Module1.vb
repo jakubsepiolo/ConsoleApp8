@@ -1,6 +1,12 @@
 ﻿Imports System.IO
 Module Module1
-    ''add maximum string character limit to title(3), forename(15), surname(15) and age(2)
+    ''add maximum string character limit to title(3), forename(15), surname(15) and age(2) and now favorite subject is some limit i need to figure out
+    ''add nice table format <<< done but clean up code
+    ''searching returns more than 1 query e.g searching age "17" returns all valid results
+    ''allow to choose what to search by
+    ''add removing student from data base (and shift every element after this element down by 1 to close gap)
+    ''add password entry
+
     Dim StudentRecord As New List(Of Student)
 
     Structure Student
@@ -32,16 +38,22 @@ Module Module1
 
     Sub LoadFromFile()
         Dim Line As String
-        Using Reader As StreamReader = New StreamReader("H:\MyFile.txt")
+        Dim Record As Student
+        Using Reader As StreamReader = New StreamReader(Directory.GetCurrentDirectory & "\Database.txt")
             Do Until Reader.EndOfStream()
                 Line = Reader.ReadLine()
-                Console.WriteLine(Line)
+                Record.Title = Line.Substring(0, 7).Trim()
+                Record.Forename = Line.Substring(8, 17).Trim()
+                Record.Surname = Line.Substring(26, 17).Trim()
+                Record.Age = Int(Line.Substring(43, 5).Trim())
+                Record.Subject = Line.Substring(48).Trim()
+                StudentRecord.Add(Record)
             Loop
         End Using
     End Sub
 
     Sub SaveToFile()
-        Using Writer As StreamWriter = New StreamWriter("H:\MyFile.txt")
+        Using Writer As StreamWriter = New StreamWriter(Directory.GetCurrentDirectory & "\Database.txt")
             For i = 0 To StudentRecord.Count - 1
                 Writer.WriteLine($"{StudentRecord(i).Title,-7} {StudentRecord(i).Forename,-17} {StudentRecord(i).Surname,-17} {StudentRecord(i).Age,-4} {StudentRecord(i).Subject}")
             Next
@@ -50,18 +62,59 @@ Module Module1
 
     Sub OutputRecord(index)
         Console.WriteLine()
-        Console.WriteLine(LSet("Title", 8) & LSet("Forename", 18) & LSet("Surname", 18) & LSet("Age", 5) & "Subject")
-        Console.WriteLine($"{StudentRecord(index).Title,-7} {StudentRecord(index).Forename,-17} {StudentRecord(index).Surname,-17} {StudentRecord(index).Age,-4} {StudentRecord(index).Subject}")
+        Console.WriteLine(LSet("Title", 8) & LSet("│Forename", 19) & LSet("│Surname", 19) & LSet("│Age", 6) & "│Subject")
+        Console.WriteLine($"{StudentRecord(index).Title,-7} │{StudentRecord(index).Forename,-17} │{StudentRecord(index).Surname,-17} │{StudentRecord(index).Age,-4} │{StudentRecord(index).Subject}")
         Console.WriteLine("Press any key to return to the menu")
         Console.ReadKey()
     End Sub
 
     Sub OutPutAll()
-        Console.WriteLine(LSet("Title", 8) & LSet("Forename", 18) & LSet("Surname", 18) & LSet("Age", 5) & "Subject")
+        Dim LongestLength As Integer = 0
         For i = 0 To StudentRecord.Count - 1
-            Console.WriteLine($"{StudentRecord(i).Title,-7} {StudentRecord(i).Forename,-17} {StudentRecord(i).Surname,-17} {StudentRecord(i).Age,-4} {StudentRecord(i).Subject}")
-            Console.WriteLine()
+            If StudentRecord(i).Subject.Length > LongestLength Then
+                LongestLength = StudentRecord(i).Subject.Length
+            End If
         Next
+        For i = 0 To (56 + LongestLength)
+            If i = 8 Or i = 27 Or i = 46 Or i = 52 Then
+                COnsole.write("┬")
+            ElseIf i = 0 Then
+                Console.write("┌")
+            ElseIf i = (56 + longestLength) Then
+                Console.Write("┐")
+            Else
+                Console.Write("─")
+            End If
+        Next
+        Console.WriteLine()
+        Console.WriteLine(LSet("│Title", 8) & LSet("│Forename", 19) & LSet("│Surname", 19) & LSet("│Age", 6) & LSet("│Subject", 20) & "│")
+        For i = 0 To (56 + LongestLength)
+            If i = 8 Or i = 27 Or i = 46 Or i = 52 Then
+                COnsole.write("┼")
+            ElseIf i = 0 Then
+                Console.write("├")
+            ElseIf i = (56 + longestLength) Then
+                Console.Write("┤")
+            Else
+                Console.Write("─")
+            End If
+        Next
+        Console.WriteLine()
+        For i = 0 To StudentRecord.Count - 1
+            Console.WriteLine($"│{StudentRecord(i).Title,-6} │{StudentRecord(i).Forename,-17} │{StudentRecord(i).Surname,-17} │{StudentRecord(i).Age,-4} │{StudentRecord(i).Subject,-19}│")
+        Next
+        For i = 0 To (56 + LongestLength)
+            If i = 8 Or i = 27 Or i = 46 Or i = 52 Then
+                COnsole.write("┴")
+            ElseIf i = 0 Then
+                Console.write("└")
+            ElseIf i = (56 + longestLength) Then
+                Console.Write("┘")
+            Else
+                Console.Write("─")
+            End If
+        Next
+        Console.WriteLine()
         Console.WriteLine("Press any key to return to the menu")
         Console.ReadKey()
     End Sub
