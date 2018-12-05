@@ -30,10 +30,20 @@ Module Module1
         Console.ReadKey()
     End Sub
 
+    Sub LoadFromFile()
+        Dim Line As String
+        Using Reader As StreamReader = New StreamReader("H:\MyFile.txt")
+            Do Until Reader.EndOfStream()
+                Line = Reader.ReadLine()
+                Console.WriteLine(Line)
+            Loop
+        End Using
+    End Sub
+
     Sub SaveToFile()
-        Using Reader As StreamWriter = New StreamWriter("MyFile.txt")
+        Using Writer As StreamWriter = New StreamWriter("H:\MyFile.txt")
             For i = 0 To StudentRecord.Count - 1
-                Reader.WriteLine($"{StudentRecord(i).Title,-7} {StudentRecord(i).Forename,-17} {StudentRecord(i).Surname,-17} {StudentRecord(i).Age,-4} {StudentRecord(i).Subject}")
+                Writer.WriteLine($"{StudentRecord(i).Title,-7} {StudentRecord(i).Forename,-17} {StudentRecord(i).Surname,-17} {StudentRecord(i).Age,-4} {StudentRecord(i).Subject}")
             Next
         End Using
     End Sub
@@ -95,6 +105,8 @@ Module Module1
                     Exit While
                 Case 5
                     SaveToFile()
+                Case 6
+                    LoadFromFile()
             End Select
         End While
     End Sub
