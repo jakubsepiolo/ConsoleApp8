@@ -1,4 +1,5 @@
-﻿Module Module1
+﻿Imports System.IO
+Module Module1
     ''add maximum string character limit to title(3), forename(15), surname(15) and age(2)
     Dim StudentRecord As New List(Of Student)
 
@@ -29,6 +30,14 @@
         Console.ReadKey()
     End Sub
 
+    Sub SaveToFile()
+        Using Reader As StreamWriter = New StreamWriter("MyFile.txt")
+            For i = 0 To StudentRecord.Count - 1
+                Reader.WriteLine($"{StudentRecord(i).Title,-7} {StudentRecord(i).Forename,-17} {StudentRecord(i).Surname,-17} {StudentRecord(i).Age,-4} {StudentRecord(i).Subject}")
+            Next
+        End Using
+    End Sub
+
     Sub OutputRecord(index)
         Console.WriteLine()
         Console.WriteLine(LSet("Title", 8) & LSet("Forename", 18) & LSet("Surname", 18) & LSet("Age", 5) & "Subject")
@@ -48,7 +57,7 @@
     End Sub
     Sub Main()
         Dim Decision As Integer
-        Dim test As String
+        Dim Search As String
         Dim Found As Boolean = False
         While True
             Console.Clear()
@@ -66,9 +75,9 @@
                     InputRecord()
                 Case 2
                     Console.Write("Which record do you want to print? (By Surname): ")
-                    test = Console.ReadLine()
+                    Search = Console.ReadLine()
                     For i = 0 To StudentRecord.Count - 1
-                        If StudentRecord(i).Surname = test Then
+                        If StudentRecord(i).Surname.ToLower() = Search.ToLower() Then
                             OutputRecord(i)
                             Found = True
                             Exit For
@@ -84,6 +93,8 @@
                     OutPutAll()
                 Case 4
                     Exit While
+                Case 5
+                    SaveToFile()
             End Select
         End While
     End Sub
