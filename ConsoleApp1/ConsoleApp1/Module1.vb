@@ -1,5 +1,5 @@
 ﻿Module Module1
-
+    ''add maximum string character limit to title(3), forename(15), surname(15) and age(2)
     Dim StudentRecord As New List(Of Student)
 
     Structure Student
