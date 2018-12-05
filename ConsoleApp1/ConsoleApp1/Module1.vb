@@ -23,27 +23,69 @@
         Console.WriteLine("Favorite Subject: ")
         Record.Subject = Console.ReadLine()
         StudentRecord.Add(Record)
+        Console.WriteLine()
+        Console.WriteLine($"Added {Record.Forename} {Record.Surname} to the database!")
+        Console.WriteLine("Press any key to return to the menu")
+        Console.ReadKey()
     End Sub
 
     Sub OutputRecord(index)
         Console.WriteLine()
-        Console.WriteLine($"{StudentRecord(index).Title} {StudentRecord(index).Forename} {StudentRecord(index).Surname} {StudentRecord(index).Age} {StudentRecord(index).Subject}")
+        Console.WriteLine(LSet("Title", 8) & LSet("Forename", 18) & LSet("Surname", 18) & LSet("Age", 5) & "Subject")
+        Console.WriteLine($"{StudentRecord(index).Title,-7} {StudentRecord(index).Forename,-17} {StudentRecord(index).Surname,-17} {StudentRecord(index).Age,-4} {StudentRecord(index).Subject}")
+        Console.WriteLine("Press any key to return to the menu")
+        Console.ReadKey()
     End Sub
 
     Sub OutPutAll()
+        Console.WriteLine(LSet("Title", 8) & LSet("Forename", 18) & LSet("Surname", 18) & LSet("Age", 5) & "Subject")
         For i = 0 To StudentRecord.Count - 1
-            Console.WriteLine($"{StudentRecord(i).Title} {StudentRecord(i).Forename} {StudentRecord(i).Surname} {StudentRecord(i).Age} {StudentRecord(i).Subject}")
+            Console.WriteLine($"{StudentRecord(i).Title,-7} {StudentRecord(i).Forename,-17} {StudentRecord(i).Surname,-17} {StudentRecord(i).Age,-4} {StudentRecord(i).Subject}")
+            Console.WriteLine()
         Next
+        Console.WriteLine("Press any key to return to the menu")
+        Console.ReadKey()
     End Sub
     Sub Main()
-        InputRecord()
-        InputRecord()
-        InputRecord()
-        Console.WriteLine()
-        OutputRecord(0)
-        Console.WriteLine()
-        OutPutAll()
-        Console.ReadKey()
+        Dim Decision As Integer
+        Dim test As String
+        Dim Found As Boolean = False
+        While True
+            Console.Clear()
+            Console.WriteLine("What would you like to do")
+            Console.WriteLine("1) Add a record")
+            Console.WriteLine("2) Print record by surname")
+            Console.WriteLine("3) Print all records")
+            Console.WriteLine("4) Exit")
+            Console.Write("What would you like to do (1-4): ")
+            Decision = Console.ReadLine()
+            Threading.Thread.Sleep(150)
+            Console.Clear()
+            Select Case Decision
+                Case 1
+                    InputRecord()
+                Case 2
+                    Console.Write("Which record do you want to print? (By Surname): ")
+                    test = Console.ReadLine()
+                    For i = 0 To StudentRecord.Count - 1
+                        If StudentRecord(i).Surname = test Then
+                            OutputRecord(i)
+                            Found = True
+                            Exit For
+                        Else
+                            Found = False
+                        End If
+                    Next
+                    If Found = False Then
+                        Console.WriteLine("Student is not in database")
+                        Threading.Thread.Sleep(1200)
+                    End If
+                Case 3
+                    OutPutAll()
+                Case 4
+                    Exit While
+            End Select
+        End While
     End Sub
 
 End Module
