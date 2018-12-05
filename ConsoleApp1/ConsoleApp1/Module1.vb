@@ -1,6 +1,6 @@
 ﻿Imports System.IO
 Module Module1
-    ''add maximum string character limit to title(3), forename(15), surname(15) and age(2) and now favorite subject is some limit i need to figure out
+    ''add maximum string character limit to title(3), forename(15), surname(15) and age(2) and now favorite subject is some limit i need to figure it out 
     ''add nice table format <<< done but clean up code
     ''searching returns more than 1 query e.g searching age "17" returns all valid results
     ''allow to choose what to search by
