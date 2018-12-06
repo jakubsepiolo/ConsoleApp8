@@ -4,8 +4,8 @@ Module Module1
     ''add nice table format <<< done but clean up code
     ''searching returns more than 1 query e.g searching age "17" returns all valid results
     ''allow to choose what to search by
-    ''add removing student from data base (and shift every element after this element down by 1 to close gap)
-    ''add password entry
+    ''add removing student from data base (and shift every element after this element down by 1 to close gap) << done, need tidy up
+    ''add password entry << done, need tidy up
 
     Dim StudentRecord As New List(Of Student)
 
@@ -16,6 +16,15 @@ Module Module1
         Dim Age As Integer
         Dim Subject As String
     End Structure
+
+    Sub RemoveRecord(index)
+        For i = index To (StudentRecord.Count - 1)
+            If i + 1 <= StudentRecord.Count - 1 Then
+                StudentRecord(i) = StudentRecord(i + 1)
+            End If
+        Next
+        StudentRecord.RemoveAt(StudentRecord.Count - 1)
+    End Sub
 
     Sub InputRecord()
         Dim Record As Student
@@ -122,14 +131,44 @@ Module Module1
         Dim Decision As Integer
         Dim Search As String
         Dim Found As Boolean = False
+        Dim Password As String = "abc123"
+        While True
+            Console.Write("Password: ")
+            Dim key As ConsoleKeyInfo
+            Dim PasswordInput As String = ""
+            Do
+                key = Console.ReadKey(True)
+                If (key.Key <> ConsoleKey.Backspace And key.Key <> ConsoleKey.Enter) Then
+                    PasswordInput += key.KeyChar
+                    Console.Write("*")
+                ElseIf key.Key = ConsoleKey.Backspace Then
+                    If key.Key = ConsoleKey.Backspace And PasswordInput.Length > 0 Then
+                        PasswordInput = PasswordInput.Substring(0, PasswordInput.Length - 1)
+                    End If
+                    Console.Write(vbBack)
+                        Console.Write(" ")
+                        Console.Write(vbBack)
+                    End If
+            Loop Until key.Key = ConsoleKey.Enter
+            If PasswordInput = Password Then
+                Exit While
+            Else
+                Console.WriteLine()
+                Console.WriteLine("Invalid password!")
+
+            End If
+        End While
         While True
             Console.Clear()
             Console.WriteLine("What would you like to do")
             Console.WriteLine("1) Add a record")
-            Console.WriteLine("2) Print record by surname")
-            Console.WriteLine("3) Print all records")
-            Console.WriteLine("4) Exit")
-            Console.Write("What would you like to do (1-4): ")
+            Console.WriteLine("2) Remove a record")
+            Console.WriteLine("3) Print record by surname")
+            Console.WriteLine("4) Print all records")
+            Console.WriteLine("5) Save database")
+            Console.WriteLine("6) Load database")
+            Console.WriteLine("7) Exit")
+            Console.Write("What would you like to do (1-6): ")
             Decision = Console.ReadLine()
             Threading.Thread.Sleep(150)
             Console.Clear()
@@ -137,6 +176,22 @@ Module Module1
                 Case 1
                     InputRecord()
                 Case 2
+                    Console.Write("Which record do you want to remove? (By Surname): ")
+                    Search = Console.ReadLine()
+                    For i = 0 To StudentRecord.Count - 1
+                        If StudentRecord(i).Surname.ToLower() = Search.ToLower() Then
+                            RemoveRecord(i)
+                            Found = True
+                            Exit For
+                        Else
+                            Found = False
+                        End If
+                    Next
+                    If Found = False Then
+                        Console.WriteLine("Student is not in database")
+                        Threading.Thread.Sleep(1200)
+                    End If
+                Case 3
                     Console.Write("Which record do you want to print? (By Surname): ")
                     Search = Console.ReadLine()
                     For i = 0 To StudentRecord.Count - 1
@@ -152,14 +207,14 @@ Module Module1
                         Console.WriteLine("Student is not in database")
                         Threading.Thread.Sleep(1200)
                     End If
-                Case 3
-                    OutPutAll()
                 Case 4
-                    Exit While
+                    OutPutAll()
                 Case 5
                     SaveToFile()
                 Case 6
                     LoadFromFile()
+                Case 7
+                    Exit While
             End Select
         End While
     End Sub
