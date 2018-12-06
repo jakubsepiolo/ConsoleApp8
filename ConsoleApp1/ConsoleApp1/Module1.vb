@@ -1,12 +1,12 @@
 ﻿Imports System.IO
 Module Module1
-    ''add maximum string character limit to title(3), forename(15), surname(15) and age(2) and now favorite subject is some limit i need to figure it out 
-    ''add nice table format <<< done but clean up code
-    ''searching returns more than 1 query e.g searching age "17" returns all valid results
-    ''allow to choose what to search by
-    ''add removing student from data base (and shift every element after this element down by 1 to close gap) << done, need tidy up
+    ''add maximum string character limit to title(3), forename(15), surname(15) and age(2) and now favorite subject is some limit i need to figure it out << least priority
+    ''add nice table format <<< done but clean up code (and fix empty table issue from search query)
+    ''searching returns more than 1 query e.g searching age "17" returns all valid results << done, tidy up
+    ''allow to choose what to search by << started (todo: implement this into removing) maybe return index value of matched searches
+    ''add removing student from data base (and shift every element after this element down by 1 to close gap) << done, need tidy up and tie into searching
     ''add password entry << done, need tidy up
-
+    ''TIDY UP ALL CODE
     Dim StudentRecord As New List(Of Student)
 
     Structure Student
@@ -24,6 +24,79 @@ Module Module1
             End If
         Next
         StudentRecord.RemoveAt(StudentRecord.Count - 1)
+    End Sub
+
+    Sub SearchDatabase()
+        Dim SearchChoice As Integer
+        Dim SearchQuery As String
+        Console.WriteLine("What do you wish to search by?")
+        Console.WriteLine("1) Title")
+        Console.WriteLine("2) Forename")
+        Console.WriteLine("3) Surname")
+        Console.WriteLine("4) Age")
+        Console.WriteLine("5) Subject")
+        SearchChoice = Console.ReadLine()
+        Select Case SearchChoice
+            Case 1
+                Console.WriteLine("Which title do you wish to search by: ")
+                SearchQuery = Console.ReadLine()
+                DrawTopTable()
+                Console.WriteLine()
+                For i = 0 To StudentRecord.Count - 1
+                    If StudentRecord(i).Title = SearchQuery Then
+                        OutputRecord(i)
+                    End If
+                Next
+                Console.WriteLine()
+                DrawBottomTable()
+            Case 2
+                Console.WriteLine("Which forename do you wish to search by: ")
+                SearchQuery = Console.ReadLine()
+                DrawTopTable()
+                Console.WriteLine()
+                For i = 0 To StudentRecord.Count - 1
+                    If StudentRecord(i).Forename.Contains(SearchQuery) = True Then
+                        OutputRecord(i)
+                    End If
+                Next
+                Console.WriteLine()
+                DrawBottomTable()
+            Case 3
+                Console.WriteLine("Which surname do you wish to search by: ")
+                SearchQuery = Console.ReadLine()
+                DrawTopTable()
+                Console.WriteLine()
+                For i = 0 To StudentRecord.Count - 1
+                    If StudentRecord(i).Surname.Contains(SearchQuery) = True Then
+                        OutputRecord(i)
+                    End If
+                Next
+                DrawBottomTable()
+            Case 4
+                Console.WriteLine("What age do you wish to search by: ")
+                SearchQuery = Int(Console.ReadLine())
+                DrawTopTable()
+                Console.WriteLine()
+                For i = 0 To StudentRecord.Count - 1
+                    If StudentRecord(i).Age = SearchQuery Then
+                        OutputRecord(i)
+                    End If
+                Next
+                Console.WriteLine()
+                DrawBottomTable()
+            Case 5
+                Console.WriteLine("What subject do you wish to search by: ")
+                SearchQuery = Console.ReadLine()
+                DrawTopTable()
+                Console.WriteLine()
+                For i = 0 To StudentRecord.Count - 1
+                    If StudentRecord(i).Subject.Contains(SearchQuery) = True Then
+                        OutputRecord(i)
+                    End If
+                Next
+                Console.WriteLine()
+                DrawBottomTable()
+        End Select
     End Sub
 
     Sub InputRecord()
@@ -70,26 +143,16 @@ Module Module1
     End Sub
 
     Sub OutputRecord(index)
-        Console.WriteLine()
-        Console.WriteLine(LSet("Title", 8) & LSet("│Forename", 19) & LSet("│Surname", 19) & LSet("│Age", 6) & "│Subject")
-        Console.WriteLine($"{StudentRecord(index).Title,-7} │{StudentRecord(index).Forename,-17} │{StudentRecord(index).Surname,-17} │{StudentRecord(index).Age,-4} │{StudentRecord(index).Subject}")
-        Console.WriteLine("Press any key to return to the menu")
-        Console.ReadKey()
+        Console.WriteLine($"│{StudentRecord(index).Title,-6} │{StudentRecord(index).Forename,-17} │{StudentRecord(index).Surname,-17} │{StudentRecord(index).Age,-4} │{StudentRecord(index).Subject,-19}│")
     End Sub
 
-    Sub OutPutAll()
-        Dim LongestLength As Integer = 0
-        For i = 0 To StudentRecord.Count - 1
-            If StudentRecord(i).Subject.Length > LongestLength Then
-                LongestLength = StudentRecord(i).Subject.Length
-            End If
-        Next
-        For i = 0 To (56 + LongestLength)
+    Sub DrawTopTable()
+        For i = 0 To 72
             If i = 8 Or i = 27 Or i = 46 Or i = 52 Then
-                COnsole.write("┬")
+                Console.Write("┬")
             ElseIf i = 0 Then
-                Console.write("┌")
-            ElseIf i = (56 + longestLength) Then
+                Console.Write("┌")
+            ElseIf i = 72 Then
                 Console.Write("┐")
             Else
                 Console.Write("─")
@@ -97,32 +160,39 @@ Module Module1
         Next
         Console.WriteLine()
         Console.WriteLine(LSet("│Title", 8) & LSet("│Forename", 19) & LSet("│Surname", 19) & LSet("│Age", 6) & LSet("│Subject", 20) & "│")
-        For i = 0 To (56 + LongestLength)
+        For i = 0 To 72
             If i = 8 Or i = 27 Or i = 46 Or i = 52 Then
-                COnsole.write("┼")
+                Console.Write("┼")
             ElseIf i = 0 Then
-                Console.write("├")
-            ElseIf i = (56 + longestLength) Then
+                Console.Write("├")
+            ElseIf i = 72 Then
                 Console.Write("┤")
             Else
                 Console.Write("─")
             End If
         Next
-        Console.WriteLine()
-        For i = 0 To StudentRecord.Count - 1
-            Console.WriteLine($"│{StudentRecord(i).Title,-6} │{StudentRecord(i).Forename,-17} │{StudentRecord(i).Surname,-17} │{StudentRecord(i).Age,-4} │{StudentRecord(i).Subject,-19}│")
-        Next
-        For i = 0 To (56 + LongestLength)
+    End Sub
+
+    Sub DrawBottomTable()
+        For i = 0 To 72
             If i = 8 Or i = 27 Or i = 46 Or i = 52 Then
-                COnsole.write("┴")
+                Console.Write("┴")
             ElseIf i = 0 Then
-                Console.write("└")
-            ElseIf i = (56 + longestLength) Then
+                Console.Write("└")
+            ElseIf i = 72 Then
                 Console.Write("┘")
             Else
                 Console.Write("─")
             End If
         Next
+    End Sub
+    Sub OutPutAll()
+        DrawTopTable()
+        Console.WriteLine()
+        For i = 0 To StudentRecord.Count - 1
+            Console.WriteLine($"│{StudentRecord(i).Title,-6} │{StudentRecord(i).Forename,-17} │{StudentRecord(i).Surname,-17} │{StudentRecord(i).Age,-4} │{StudentRecord(i).Subject,-19}│")
+        Next
+        DrawBottomTable()
         Console.WriteLine()
         Console.WriteLine("Press any key to return to the menu")
         Console.ReadKey()
@@ -192,21 +262,10 @@ Module Module1
                         Threading.Thread.Sleep(1200)
                     End If
                 Case 3
-                    Console.Write("Which record do you want to print? (By Surname): ")
-                    Search = Console.ReadLine()
-                    For i = 0 To StudentRecord.Count - 1
-                        If StudentRecord(i).Surname.ToLower() = Search.ToLower() Then
-                            OutputRecord(i)
-                            Found = True
-                            Exit For
-                        Else
-                            Found = False
-                        End If
-                    Next
-                    If Found = False Then
-                        Console.WriteLine("Student is not in database")
-                        Threading.Thread.Sleep(1200)
-                    End If
+                    SearchDatabase()
+                    Console.WriteLine()
+                    Console.Write("Press any key to return to the menu")
+                    Console.ReadKey()
                 Case 4
                     OutPutAll()
                 Case 5
