@@ -47,7 +47,6 @@ Module Module1
                         OutputRecord(i)
                     End If
                 Next
-                Console.WriteLine()
                 DrawBottomTable()
             Case 2
                 Console.WriteLine("Which forename do you wish to search by: ")
@@ -59,7 +58,6 @@ Module Module1
                         OutputRecord(i)
                     End If
                 Next
-                Console.WriteLine()
                 DrawBottomTable()
             Case 3
                 Console.WriteLine("Which surname do you wish to search by: ")
@@ -82,7 +80,6 @@ Module Module1
                         OutputRecord(i)
                     End If
                 Next
-                Console.WriteLine()
                 DrawBottomTable()
             Case 5
                 Console.WriteLine("What subject do you wish to search by: ")
@@ -94,7 +91,6 @@ Module Module1
                         OutputRecord(i)
                     End If
                 Next
-                Console.WriteLine()
                 DrawBottomTable()
         End Select
     End Sub
@@ -233,7 +229,7 @@ Module Module1
             Console.WriteLine("What would you like to do")
             Console.WriteLine("1) Add a record")
             Console.WriteLine("2) Remove a record")
-            Console.WriteLine("3) Print record by surname")
+            Console.WriteLine("3) Print record by query")
             Console.WriteLine("4) Print all records")
             Console.WriteLine("5) Save database")
             Console.WriteLine("6) Load database")
