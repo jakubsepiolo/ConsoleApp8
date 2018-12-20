@@ -117,23 +117,27 @@ Module Module1
     Sub LoadFromFile()
         Dim Line As String
         Dim Record As Student
-        Using Reader As StreamReader = New StreamReader(Directory.GetCurrentDirectory & "\Database.txt")
-            Do Until Reader.EndOfStream()
-                Line = Reader.ReadLine()
-                Record.Title = Line.Substring(0, 7).Trim()
-                Record.Forename = Line.Substring(8, 17).Trim()
-                Record.Surname = Line.Substring(26, 17).Trim()
-                Record.Age = Int(Line.Substring(43, 5).Trim())
-                Record.Subject = Line.Substring(48).Trim()
+        Using Reader As BinaryReader = New BinaryReader(File.Open(Directory.GetCurrentDirectory & "\Database.txt", FileMode.Open))
+            For i = 0 To Reader.ReadInt32 - 1
+                Record.Title = Reader.ReadString.Trim()
+                Record.Forename = Reader.ReadString.Trim()
+                Record.Surname = Reader.ReadString.Trim()
+                Record.Age = Int(Reader.ReadString.Trim())
+                Record.Subject = Reader.ReadString.Trim()
                 StudentRecord.Add(Record)
-            Loop
+            Next
         End Using
     End Sub
 
     Sub SaveToFile()
-        Using Writer As StreamWriter = New StreamWriter(Directory.GetCurrentDirectory & "\Database.txt")
+        Using Writer As BinaryWriter = New BinaryWriter(File.Open(Directory.GetCurrentDirectory & "\Database.txt", FileMode.Create))
+            Writer.Write(StudentRecord.Count)
             For i = 0 To StudentRecord.Count - 1
-                Writer.WriteLine($"{StudentRecord(i).Title,-7} {StudentRecord(i).Forename,-17} {StudentRecord(i).Surname,-17} {StudentRecord(i).Age,-4} {StudentRecord(i).Subject}")
+                Writer.Write($"{StudentRecord(i).Title,-7}")
+                Writer.Write($"{StudentRecord(i).Forename,-17}")
+                Writer.Write($"{StudentRecord(i).Surname,-17}")
+                Writer.Write($"{StudentRecord(i).Age,-4}")
+                Writer.Write($"{StudentRecord(i).Subject}")
             Next
         End Using
     End Sub
